@@ -1,0 +1,9 @@
+services:
+  postgres-service:
+    container_name: postgres-service
+    image: postgres:16.2
+    restart: always
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
