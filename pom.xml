@@ -30,6 +30,7 @@
         <java.version>23</java.version>
         <jwt.version>0.11.5</jwt.version>
         <modelmapper.version>3.1.1</modelmapper.version>
+        <openapi.version>2.5.0</openapi.version>
     </properties>
     <dependencies>
         <dependency>
@@ -90,6 +91,16 @@
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
             <version>${modelmapper.version}</version>
+        </dependency>
+        <!-- OPEN API -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${openapi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
         </dependency>
         <!-- TEST -->
         <dependency>

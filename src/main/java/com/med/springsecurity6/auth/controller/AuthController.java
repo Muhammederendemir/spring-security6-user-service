@@ -7,6 +7,11 @@ import com.med.springsecurity6.auth.service.TokenBlacklistService;
 import com.med.springsecurity6.refleshtoken.RefreshToken;
 import com.med.springsecurity6.refleshtoken.model.RefreshTokenRequestDTO;
 import com.med.springsecurity6.refleshtoken.service.RefreshTokenService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,6 +39,16 @@ public class AuthController {
         this.tokenBlacklistService = tokenBlacklistService;
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Results are ok", content = { @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = JwtResponseDTO.class)) }),
+            @ApiResponse(responseCode = "400", description = "Invalid request",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "User not found",
+                    content = @Content),
+            @ApiResponse(responseCode = "401", description = "User not a",
+                    content = @Content)})
+    @Operation(summary = "Login API")
     @PostMapping("/login")
     public JwtResponseDTO AuthenticateAndGetToken(@RequestBody AuthRequestDTO authRequestDTO){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDTO.getUsername(), authRequestDTO.getPassword()));
@@ -48,7 +63,14 @@ public class AuthController {
 
     }
 
-
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Results are ok", content = { @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = JwtResponseDTO.class)) }),
+            @ApiResponse(responseCode = "400", description = "Invalid request",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Token not found",
+                    content = @Content)})
+    @Operation(summary = "Refresh Token API")
     @PostMapping("/refreshToken")
     public JwtResponseDTO refreshToken(@RequestBody RefreshTokenRequestDTO refreshTokenRequestDTO){
         return refreshTokenService.findByToken(refreshTokenRequestDTO.getToken())
@@ -59,7 +81,16 @@ public class AuthController {
                     return new  JwtResponseDTO(accessToken,refreshTokenRequestDTO.getToken());
                 }).orElseThrow(() ->new RuntimeException("Refresh Token is not in DB..!!"));
     }
-
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Results are ok", content = { @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ResponseEntity.class)) }),
+            @ApiResponse(responseCode = "400", description = "Invalid request",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "User not found",
+                    content = @Content),
+            @ApiResponse(responseCode = "401", description = "user not verified",
+                    content = @Content)})
+    @Operation(summary = "Logout API")
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {
         // Clear any session-related data if necessary

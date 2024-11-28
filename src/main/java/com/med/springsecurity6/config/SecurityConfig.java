@@ -55,7 +55,19 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/v1/save",
                                 "/api/v1/login",
-                                "/api/v1/refreshToken")
+                                "/api/v1/refreshToken",
+                                "/v2/api-docs",
+                                "/api/swagger-config",
+                                "/swagger-resources",
+                                "/swagger-resources/**",
+                                "/configuration/ui",
+                                "/configuration/security",
+                                "/swagger-ui.html",
+                                "/webjars/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger.json/**",
+                                "/api/public")
                         .permitAll()
                         .anyRequest().authenticated()
                 )
